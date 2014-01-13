@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Players{% endblock %}
+
+{% block content %}
+{#<div class="starter-template">#}
+  <h1>Players</h1>
+  <table class="table table-striped">
+    <thead>
+      <th>Rank</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+    </thead>
+    <tbody>
+      {% for player in player_list %}
+      <tr>
+        <td></td>
+        <td>{{ player.first_name }}</td>
+        <td>{{ player.last_name }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{#</div>#}
+{% endblock %}

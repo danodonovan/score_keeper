@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Goals{% endblock %}
+
+{% block content %}
+<h1>Goals</h1>
+<table class="table table-striped">
+  <thead>
+    <th>Date</th>
+    <th>Player</th>
+    <th>Game Finished</th>
+  </thead>
+  <tbody>
+    {% for goal in goal_list %}
+    <tr>
+      <td>{{ goal.time }}</td>
+      <td>{{ goal.scorer }}</td>
+      <td>{{ goal.game }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
