@@ -8,6 +8,7 @@ class PlayerListView(ListView):
 
     model = Player
     context_object_name = 'player_list'
+    template_name = 'keeper/player_list.html'
 
 
 class GoalListView(ListView):

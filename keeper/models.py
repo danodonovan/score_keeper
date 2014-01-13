@@ -1,5 +1,13 @@
+import operator
 from django.db import models
 
+
+class PlayerManager(models.Manager):
+
+    def get_query_set(self):
+        auths = super(PlayerManager, self).get_query_set().all().order_by('last_name')
+        ordered = sorted(auths, key=operator.attrgetter('aggregate_scored'))[::-1]
+        return ordered
 
 class Player(models.Model):
 
@@ -7,8 +15,14 @@ class Player(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 
+    sorted = PlayerManager()
+
     def get_initials(self):
         return '.'.join([self.first_name[0], self.last_name[0]])
+
+    @property
+    def aggregate_scored(self):
+        return Goal.objects.filter(scorer_id=self.id).count()
 
     def __unicode__(self):
         return "{first} {last} ({initials})".format(
@@ -43,4 +57,4 @@ class Goal(models.Model):
 
     def __unicode__(self):
         return "{scorer} {time}".format(
-            scorer=self.scorer.initials, time=self.time)
+            scorer=self.scorer.get_initials(), time=self.time)
