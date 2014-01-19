@@ -1,4 +1,4 @@
-from django.shortcuts import render
+import operator
 from django.views.generic.list import ListView
 
 from keeper.models import Player, Goal, Game
@@ -7,17 +7,17 @@ from keeper.models import Player, Goal, Game
 class PlayerListView(ListView):
 
     model = Player
-    context_object_name = 'player_list'
     template_name = 'keeper/player_list.html'
+    context_object_name = 'player_list'
+
+    queryset = sorted(Player.objects.all(), key=lambda a: a.aggregate_scored)[::-1]
 
 
 class GoalListView(ListView):
 
     model = Goal
-    context_object_name = 'goal_list'
 
 
 class GameListView(ListView):
 
     model = Game
-    context_object_name = 'game_list'

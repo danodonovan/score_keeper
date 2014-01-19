@@ -5,9 +5,14 @@ from django.db import models
 class PlayerManager(models.Manager):
 
     def get_query_set(self):
-        auths = super(PlayerManager, self).get_query_set().all().order_by('last_name')
-        ordered = sorted(auths, key=operator.attrgetter('aggregate_scored'))[::-1]
-        return ordered
+        return sorted(super(PlayerManager, self).get_query_set().all(), key=operator.attrgetter('aggregate_scored'))[::-1]
+
+    #     pms = super(PlayerManager, self).get_query_set().all()
+    #     # return auths
+    #     # ordered = sorted(pms, key=operator.attrgetter('aggregate_scored'))
+    #     ordered = sorted(pms)
+    #     return ordered
+    pass
 
 class Player(models.Model):
 
@@ -15,7 +20,8 @@ class Player(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 
-    sorted = PlayerManager()
+    # sorted = PlayerManager()
+    # score_objects = PlayerManager()
 
     def get_initials(self):
         return '.'.join([self.first_name[0], self.last_name[0]])
@@ -41,6 +47,15 @@ class Game(models.Model):
 
     white_team_goals = models.ManyToManyField('Goal', related_name='white_team_goal')
     yellow_team_goals = models.ManyToManyField('Goal', related_name='yellow_team_goal')
+
+    class Meta:
+        ordering = ['-finished',]
+
+    def yellow_team_text(self):
+        return ", ".join([str(p) for p in self.yellow_team.all()])
+
+    def white_team_text(self):
+        return ", ".join([str(p) for p in self.white_team.all()])
 
     def __unicode__(self):
         return "{w_score}:{y_score} ({time})".format(

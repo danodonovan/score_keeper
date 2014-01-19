@@ -9,27 +9,17 @@
     <th>Played</th>
     <th>White Team</th>
     <th>White Score</th>
-    <th>Yellow Team</th>
     <th>Yellow Score</th>
+    <th>Yellow Team</th>
   </thead>
   <tbody>
     {% for game in game_list %}
     <tr>
       <td>{{ game.finished }}</td>
-      <td>
-        {% for player in game.white_team.all %}
-          {{ player }}
-          {% if not forloop.last %}, {% endif %}
-        {% endfor %}
-      </td>
+      <td>{{ game.white_team_text }}</td>
       <td>{{ game.white_team_goals.count }}</td>
-      <td>
-        {% for player in game.yellow_team.all %}
-          {{ player }}
-          {% if not forloop.last %}, {% endif %}
-        {% endfor %}
-      </td>
       <td>{{ game.yellow_team_goals.count }}</td>
+      <td>{{ game.yellow_team_text }}</td>
     </tr>
     {% endfor %}
   </tbody>
